@@ -1,0 +1,89 @@
+ # Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 环境相关
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# 编辑器/IDE相关
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统相关
+.DS_Store
+Thumbs.db
+
+# 项目特有的忽略项
+# 忽略输出图像，但保留README或示例
+outputs/*.png
+# 但保留示例文件
+!outputs/example_*.png
+
+# 忽略大型模型权重和检查点
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.bin
+model/**/checkpoints/
+model/**/weights/
+
+# 忽略大型数据集文件
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.arrow
+*.db
+*.sqlite
+*.sqlite3
+
+# 忽略生成的大型JSON文件，但保留配置文件
+data/graph_parser/training_data.json
+data/graph_parser/input_questions.json
+data/graph_parser/output_graphs.json
+# 但保留配置文件
+!data/graph_parser/common/*.json
+
+# 忽略日志文件
+*.log
+logs/
+
+# 忽略缓存
+.cache/
+.pytest_cache/
+.coverage
+
+# 忽略Jupyter Notebook临时文件
+.ipynb_checkpoints
+
+# # 忽略训练输出目录中的权重和大型文件
+# data/graph_parser/train_output/

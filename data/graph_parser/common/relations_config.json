@@ -1,0 +1,412 @@
+{
+    "relations": {
+      "has_phone": {
+        "db_field": "phone",
+        "display_name": "电话号码",
+        "compatible_types": ["phone"],
+        "keywords": ["电话", "联系方式", "打电话", "联系电话"],
+        "question_templates": [
+          "{university}的电话号码是多少？",
+          "如何通过电话联系{university}？",
+          "{university}联系电话是什么？",
+          "我想打电话给{university}",
+          "我需要知道{university}的联系电话",
+          "请问{university}的电话怎么找？",
+          "{university}电话多少",
+          "{university}有什么联系方式？",
+          "想打电话联系{university}",
+          "{university}的总机电话是多少"
+        ],
+        "node_types": {"main_type": "university", "query_type": "phone"}
+      },
+      "located_in": {
+        "db_field": "location",
+        "display_name": "位于",
+        "compatible_types": ["location", "city"],
+        "keywords": ["在哪里", "位于", "地址", "在哪儿", "位置"],
+        "question_templates": [
+          "{university}在哪里？",
+          "{university}的校址在哪？",
+          "请告诉我{university}的地址",
+          "{university}坐落于哪个城市？",
+          "怎么去{university}？它的地址是？",
+          "{university}的校园位置在哪？",
+          "{university}位于什么地方？",
+          "{university}的地理位置是哪里？",
+          "到{university}怎么走？",
+          "{university}在哪个区？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "location"}
+      },
+      "has_president": {
+        "db_field": "president",
+        "display_name": "校长",
+        "compatible_types": ["person"],
+        "keywords": ["校长", "校长是谁", "校长是谁"],
+        "question_templates": [
+          "{university}现任校长是谁？",
+          "谁担任{university}校长？",
+          "{university}校长的名字是？",
+          "{university}的领导者是谁",
+          "谁是{university}的校长？",
+          "{university}现在的校长是谁？",
+          "谁负责管理{university}？",
+          "{university}校长是哪位？",
+          "请问谁是{university}的现任校长？",
+          "{university}是由谁领导的？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "person"}
+      },
+      "has_website": {
+        "db_field": "website",
+        "display_name": "网站",
+        "compatible_types": ["website"],
+        "keywords": ["网站", "网址", "官网", "网址是什么"],
+        "question_templates": [
+          "{university}的网站链接是什么？",
+          "如何进入{university}的官方网站？",
+          "{university}网址是多少",
+          "请问{university}的网站是什么",
+          "如何在网上找到{university}？",
+          "{university}的官网地址",
+          "我想浏览{university}的网站",
+          "{university}官方网站的网址是？",
+          "怎样才能访问{university}的网站？",
+          "{university}的主页是什么？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "website"}
+      },
+      "has_tuition": {
+        "db_field": "tuition",
+        "display_name": "学费",
+        "compatible_types": ["tuition"],
+        "keywords": ["学费", "学费是多少", "学费多少钱"],
+        "question_templates": [
+          "在{university}就读一年要多少学费？",
+          "{university}的收费标准是什么？",
+          "{university}本科生一年学费",
+          "{university}的学费是多少钱一年？",
+          "{university}收费贵吗？具体多少？",
+          "就读{university}需要多少学费？",
+          "请问{university}的学费标准是什么？",
+          "{university}的研究生学费是多少？",
+          "{university}国际生的学费是多少？",
+          "{university}一学期的学费是多少？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "tuition"}
+      },
+      "has_motto": {
+        "db_field": "motto",
+        "display_name": "校训",
+        "compatible_types": ["motto"],
+        "keywords": ["校训", "校训是什么", "校训是什么"],
+        "question_templates": [
+          "{university}的校训是什么？",
+          "{university}的校训内容",
+          "{university}有什么教育理念或校训？",
+          "请告诉我{university}的校训",
+          "{university}的校训用英语怎么说？",
+          "{university}的座右铭是什么？",
+          "谁提出了{university}的校训？",
+          "{university}的校训有什么含义？",
+          "{university}的精神理念是什么？",
+          "{university}校训体现了什么价值观？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "motto"}
+      },
+      "founded_in": {
+        "db_field": "founding_date",
+        "display_name": "成立时间",
+        "compatible_types": ["year"],
+        "keywords": ["成立时间", "成立时间是什么", "成立时间是什么"],
+        "question_templates": [
+          "{university}什么时候建立的？",
+          "{university}创办于哪一年？",
+          "{university}已经有多少年历史了？它成立于哪一年？",
+          "{university}的建校时间是？",
+          "{university}是哪一年开始招生的？",
+          "{university}的历史可以追溯到哪一年？",
+          "{university}的创始人是谁？创建于何时？",
+          "{university}的成立年份是？",
+          "{university}已有多少年历史？",
+          "{university}的建校日期是什么时候？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "year"}
+      },
+      "has_student_count": {
+        "db_field": "student_count",
+        "display_name": "学生人数",
+        "compatible_types": ["number"],
+        "keywords": ["学生人数", "学生人数是多少", "学生人数是多少"],
+        "question_templates": [
+          "{university}有多少在校生？",
+          "{university}的学生总人数是多少？",
+          "{university}在校生规模有多大？",
+          "{university}目前的学生数量是多少？",
+          "{university}每年招收多少新生？",
+          "{university}的学生总数大约是多少？",
+          "{university}有多少名学生？",
+          "{university}的本科生和研究生总数是多少？",
+          "{university}有多少中国学生和国际学生？",
+          "{university}的师生比例是多少？学生总数是？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "student_count"}
+      },
+      "has_admission_score": {
+        "db_field": "admission_score",
+        "display_name": "录取分数线",
+        "compatible_types": ["number"],
+        "keywords": ["录取分数线", "录取分数线是多少", "录取分数线是多少"],
+        "question_templates": [
+          "{university}今年的录取分数线是多少？",
+          "{university}理科分数线",
+          "{university}文科最低录取分是多少？",
+          "{university}各省份的录取分数线是多少？",
+          "{university}的最低录取标准是什么？",
+          "想上{university}需要考多少分？",
+          "{university}去年的分数线是多少？",
+          "{university}在北京的录取分数线是多少？",
+          "{university}的自主招生分数线是多少？",
+          "{university}艺术类专业分数线是多少？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "admission_score"}
+      },
+      "has_international_program": {
+        "db_field": "international_program",
+        "display_name": "国际项目",
+        "compatible_types": ["international_program"],
+        "keywords": ["国际项目", "国际项目是什么", "国际项目是什么"],
+        "question_templates": [
+          "{university}接收留学生吗？",
+          "外国学生可以申请{university}吗？",
+          "{university}有英语授课的课程吗？",
+          "{university}的国际交流项目有哪些？",
+          "{university}与哪些国外大学有合作？",
+          "{university}的留学生比例是多少？",
+          "{university}有哪些国际合作办学项目？",
+          "{university}的国际学生需要什么条件？",
+          "{university}提供留学生奖学金吗？",
+          "{university}的留学生来自哪些国家？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "international_program"}
+      },
+      "predecessor": {
+        "db_field": "predecessor",
+        "display_name": "前身",
+        "compatible_types": ["university"],
+        "keywords": ["前身", "前身是什么", "前身是什么"],
+        "question_templates": [
+          "{university}的前身是什么学校？",
+          "{university}是由哪些学校合并而成的？",
+          "{university}最早叫什么名字？",
+          "{university}的历史渊源是什么？",
+          "{university}是从什么机构发展而来的？",
+          "{university}在建校初期是什么样子的？",
+          "{university}的前身最初是在哪一年成立的？",
+          "{university}历史上经历了哪些更名？",
+          "{university}是如何演变成现在的规模的？",
+          "{university}最初的校址在哪里？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "university"}
+      },
+      "nearest_metro": {
+        "db_field": "nearest_metro",
+        "display_name": "最近的地铁站",
+        "compatible_types": ["metro_station"],
+        "keywords": ["最近的地铁站", "最近的地铁站是什么", "最近的地铁站是什么"],
+        "question_templates": [
+          "{university}的地铁站是哪一站？",
+          "去{university}最近的地铁站是什么？",
+          "乘坐地铁去{university}应该在哪一站下车？",
+          "{university}附近有地铁站吗？",
+          "从市中心乘地铁去{university}怎么走？",
+          "距离{university}最近的公共交通是什么？",
+          "{university}校门口有地铁站吗？",
+          "去{university}乘几号线地铁最方便？",
+          "{university}东门最近的地铁站是哪个？",
+          "从地铁站到{university}步行需要多久？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "metro_station"}
+      },
+      "anniversary_date": {
+        "db_field": "anniversary_date",
+        "display_name": "校庆日期",
+        "compatible_types": ["date"],
+        "keywords": ["校庆日期", "校庆日期是什么", "校庆日期是什么"],
+        "question_templates": [
+          "{university}的校庆日是哪一天？",
+          "{university}每年的校庆在什么时候举行？",
+          "{university}的周年纪念日是几月几日？",
+          "{university}的校庆活动通常在什么时候？",
+          "{university}的建校纪念日是哪天？",
+          "{university}今年要举行多少周年校庆？",
+          "{university}的校庆通常会持续几天？",
+          "{university}的下一次重要校庆是什么时候？",
+          "{university}校庆日有什么特别的活动？",
+          "{university}的历史上最重要的校庆是哪一次？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "date"}
+      },
+      "academician_count": {
+        "db_field": "academician_count",
+        "display_name": "院士人数",
+        "compatible_types": ["number"],
+        "keywords": ["院士", "院士人数", "科学院院士", "工程院院士"],
+        "question_templates": [
+          "{university}的院士人数是多少？",
+          "{university}有多少两院院士？",
+          "{university}拥有多少名科学院院士？",
+          "{university}的院士团队有多大？",
+          "{university}工程院院士有几位？",
+          "{university}科学院院士有几位？",
+          "{university}有哪些著名的院士？",
+          "{university}近年来新增了多少院士？",
+          "{university}院士在全国排名如何？",
+          "{university}外籍院士有多少人？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "number"}
+      },
+      "library_volume": {
+        "db_field": "library_volume",
+        "display_name": "藏书量",
+        "compatible_types": ["number"],
+        "keywords": ["藏书", "藏书量", "图书馆藏书", "图书数量"],
+        "question_templates": [
+          "{university}图书馆有多少藏书？",
+          "{university}的图书馆藏书量是多少？",
+          "{university}图书馆有多少册图书？",
+          "{university}图书馆的规模有多大？",
+          "{university}拥有多少电子图书资源？",
+          "{university}的文献资源数量是多少？",
+          "{university}的图书馆是全国第几大？",
+          "{university}图书馆每年新增多少册图书？",
+          "{university}的珍本书籍有多少？",
+          "{university}图书馆订阅了多少种期刊？",
+          "{university}的图书馆有哪些特色馆藏？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "number"}
+      },
+      "party_secretary": {
+        "db_field": "party_secretary",
+        "display_name": "党委书记",
+        "compatible_types": ["person"],
+        "keywords": ["党委书记", "党委书记是谁", "党委书记是谁"],
+        "question_templates": [
+          "{university}的现任党委书记是谁？",
+          "谁是{university}的党委书记？",
+          "{university}党委主要负责人是谁？",
+          "{university}的党委书记叫什么名字？",
+          "谁担任{university}党委书记职务？",
+          "{university}目前的党委书记是哪位？",
+          "{university}的党委领导是谁？",
+          "谁是{university}党委的一把手？",
+          "{university}党委书记上任时间是什么时候？",
+          "{university}党委书记有什么主要成就？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "person"}
+      },
+      "offers_major": {
+        "db_field": "offers_major",
+        "display_name": "提供专业",
+        "compatible_types": ["major_list", "major"],
+        "keywords": ["提供专业", "提供专业是什么", "提供专业是什么"],
+        "question_templates": [
+          "{university}有哪些王牌专业？",
+          "{university}的优势学科有哪些？",
+          "{university}最好的专业是什么？",
+          "{university}都开设了哪些专业？",
+          "{university}的特色学科有哪些？",
+          "{university}最受欢迎的专业是什么？",
+          "{university}的哪些专业全国排名靠前？",
+          "{university}的王牌学院是哪个？",
+          "{university}的专业设置情况如何？",
+          "{university}的热门专业有哪些？"
+        ],
+        "node_types": {"main_type": "university", "query_type": "major_list"}
+      },
+      "has_facility": {
+        "db_field": "has_facility",
+        "display_name": "设施",
+        "compatible_types": ["library", "sports_center", "canteen", "laboratory", "dormitory"],
+        "keywords": ["设施", "设施是什么", "设施是什么"],
+        "question_templates": [
+          "{university}的图书馆在哪？",
+          "{university}的体育馆位置在哪里？",
+          "{university}的食堂有几个？",
+          "{university}有什么著名的建筑？",
+          "{university}的实验室设施如何？",
+          "{university}都有哪些教学楼？",
+          "{university}的运动场在哪里？",
+          "{university}的学生宿舍条件如何？",
+          "{university}的医务室在哪？",
+          "{university}的会堂在什么位置？"
+        ],
+        "complex_config": {
+          "facilities": [
+            {"name": "图书馆", "type": "library"},
+            {"name": "体育馆", "type": "sports_center"},
+            {"name": "食堂", "type": "canteen"},
+            {"name": "实验室", "type": "laboratory"},
+            {"name": "宿舍", "type": "dormitory"}
+          ],
+          "query_type": "location"
+        }
+      }
+    },
+    "node_types": {
+      "phone": {"display_name": "电话号码"},
+      "location": {"display_name": "位置"},
+      "person": {"display_name": "人物"},
+      "university": {"display_name": "大学"},
+      "website": {"display_name": "网站"},
+      "tuition": {"display_name": "学费"},
+      "motto": {"display_name": "校训"},
+      "year": {"display_name": "年份"},
+      "number": {"display_name": "数字"},
+      "date": {"display_name": "日期"},
+      "major_list": {"display_name": "专业列表"},
+      "major": {"display_name": "专业"},
+      "student_count": {"display_name": "学生人数"},
+      "admission_score": {"display_name": "录取分数"},
+      "international_program": {"display_name": "国际项目"},
+      "metro_station": {"display_name": "地铁站"},
+      "library": {"display_name": "图书馆"},
+      "sports_center": {"display_name": "体育馆"},
+      "canteen": {"display_name": "食堂"},
+      "laboratory": {"display_name": "实验室"},
+      "dormitory": {"display_name": "宿舍"}
+    },
+    "templates": {
+      "phone": "{entity}的电话号码是{value}。",
+      "location": "{entity}位于{value}。",
+      "person": "{entity}的{relation_display}是{value}。",
+      "president": "{entity}的校长是{value}。",
+      "party_secretary": "{entity}的党委书记是{value}。",
+      "website": "{entity}的网站是{value}。",
+      "tuition": "{entity}的学费是{value}。",
+      "motto": "{entity}的校训是{value}。",
+      "year": "{entity}成立于{value}年。",
+      "number": "{entity}有{value}名学生。",
+      "student_count": "{entity}共有{value}名学生。",
+      "admission_score": "{entity}的录取分数线是{value}分。",
+      "international_program": "{entity}的国际项目是{value}。",
+      "academician_count": "{entity}拥有{value}位院士。",
+      "library_volume": "{entity}的图书馆藏书量为{value}。",
+      "metro_station": "{entity}最近的地铁站是{value}。",
+      "date": "{entity}的校庆日期是{value}。",
+      "major_list": "{entity}提供的专业包括{value}。",
+      "major": "{entity}的特色专业是{value}。",
+      "predecessor": "{entity}的前身是{value}。",
+      "library": "{entity}的图书馆在{value}。",
+      "sports_center": "{entity}的体育馆位于{value}。",
+      "canteen": "{entity}的食堂位于{value}。",
+      "laboratory": "{entity}的实验室位于{value}。",
+      "dormitory": "{entity}的宿舍位于{value}。"
+    },
+    "default_values": {
+      "admission_score": "暂无数据",
+      "international_program": "暂无详细信息",
+      "tuition": "请咨询招生办公室",
+      "offers_major": "请参考大学官网"
+    }
+  }

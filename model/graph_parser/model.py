@@ -1,4 +1,5 @@
 import torch
+import torch_musa
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
@@ -10,6 +11,9 @@ import json
 from sklearn.model_selection import train_test_split
 import os
 import numpy as np
+import math
+from collections import defaultdict
+from tqdm import tqdm
 
 # 设置中文字体支持
 matplotlib.use('Agg')  # 避免需要GUI环境
@@ -111,10 +115,25 @@ class GraphQueryParser(nn.Module):
             nn.GELU()
         )
         
-        # 添加注意力层
-        self.attention = nn.MultiheadAttention(hidden_dim, 8, batch_first=True, dropout=dropout_rate)
+        # 自定义注意力实现 (不使用nn.MultiheadAttention)
+        self.query_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.key_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.value_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.attn_dropout = nn.Dropout(dropout_rate)
+        self.out_proj = nn.Linear(hidden_dim, hidden_dim)
         
-        # 主实体预测器
+        # 创建关系识别专用的注意力机制
+        self.relation_query_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.relation_key_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.relation_value_proj = nn.Linear(hidden_dim, hidden_dim)
+        
+        # 关系特定的池化层
+        self.relation_pooling = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.Tanh()
+        )
+        
+        # 主实体预测器 - 不变
         self.main_entity_decoder = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim//2),
             nn.Dropout(dropout_rate),
@@ -122,22 +141,67 @@ class GraphQueryParser(nn.Module):
             nn.Linear(hidden_dim//2, num_node_types)
         )
         
-        # 修改: 关系预测器接收主实体表示作为附加输入
+        # 关系预测器 - 独立路径，不依赖实体类型
         self.relation_decoder = nn.Sequential(
-            nn.Linear(hidden_dim + num_node_types, hidden_dim//2),
+            nn.Linear(hidden_dim*2, hidden_dim),  # 使用句子表示和特定关系表示
+            nn.Dropout(dropout_rate),
+            nn.GELU(),
+            nn.LayerNorm(hidden_dim),
+            nn.Linear(hidden_dim, hidden_dim//2),
             nn.Dropout(dropout_rate),
             nn.GELU(),
             nn.Linear(hidden_dim//2, num_relations)
         )
         
-        # 修改: 查询类型预测器接收主实体和关系表示作为附加输入
+        # 查询类型预测器 - 使用多模态融合
+        self.query_type_fusion = nn.Sequential(
+            nn.Linear(hidden_dim*3, hidden_dim),  # 融合三种表示
+            nn.LayerNorm(hidden_dim),
+            nn.Dropout(dropout_rate),
+            nn.GELU()
+        )
+        
         self.query_type_decoder = nn.Sequential(
-            nn.Linear(hidden_dim + num_node_types + num_relations, hidden_dim//2),
+            nn.Linear(hidden_dim, hidden_dim//2),
             nn.Dropout(dropout_rate),
             nn.GELU(),
             nn.Linear(hidden_dim//2, num_node_types)
         )
         
+        # 修改: 调整兼容性矩阵的维度为[num_node_types, num_relations]
+        self.compatibility_matrix = nn.Parameter(
+            torch.zeros(num_node_types, num_relations)
+        )
+        
+        # 添加兼容性投影层作为替代
+        self.compatibility_projection = nn.Linear(num_node_types, hidden_dim)
+    
+    def custom_attention(self, query, key, value, attn_mask=None):
+        """自定义注意力实现，避免使用nn.MultiheadAttention"""
+        # 投影查询、键、值
+        q = self.query_proj(query)  # [batch_size, seq_len, hidden_dim]
+        k = self.key_proj(key)      # [batch_size, seq_len, hidden_dim]
+        v = self.value_proj(value)  # [batch_size, seq_len, hidden_dim]
+        
+        # 计算注意力分数
+        scores = torch.matmul(q, k.transpose(-2, -1)) / torch.sqrt(torch.tensor(k.shape[-1], dtype=torch.float32, device=k.device))
+        
+        # 应用掩码（如果提供）
+        if attn_mask is not None:
+            scores = scores.masked_fill(~attn_mask.unsqueeze(1), -1e9)
+        
+        # 应用softmax
+        attn_weights = F.softmax(scores, dim=-1)
+        attn_weights = self.attn_dropout(attn_weights)
+        
+        # 加权组合值向量
+        context = torch.matmul(attn_weights, v)
+        
+        # 输出投影
+        output = self.out_proj(context)
+        
+        return output
+    
     def forward(self, input_ids, attention_mask):
         # 编码文本
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
@@ -145,9 +209,9 @@ class GraphQueryParser(nn.Module):
         # 获取每个token的表示
         token_repr = outputs.last_hidden_state
         
-        # 应用自注意力
-        attn_output, _ = self.attention(token_repr, token_repr, token_repr, 
-                                      key_padding_mask=(attention_mask == 0))
+        # 应用自定义注意力 (替代之前的self.attention调用)
+        bool_mask = attention_mask.bool()
+        attn_output = self.custom_attention(token_repr, token_repr, token_repr, bool_mask)
         
         # 残差连接
         enhanced_repr = token_repr + attn_output
@@ -158,22 +222,40 @@ class GraphQueryParser(nn.Module):
         # 转换表示
         transformed = self.transform(sentence_repr)
         
-        # 修改: 使用级联预测，每个预测任务都依赖前一个任务的结果
-        
-        # 1. 预测主实体类型
+        # 1. 预测主实体类型（与原来相同）
         main_entity_logits = self.main_entity_decoder(transformed)
         main_entity_probs = F.softmax(main_entity_logits, dim=1)
         
-        # 2. 预测关系类型，加入主实体信息
-        # 将主实体概率分布与句子表示连接起来
-        relation_input = torch.cat([transformed, main_entity_probs], dim=1)
+        # 2. 创建关系特定的表示
+        # 应用关系特定的注意力，识别句子中的关系指示词
+        relation_q = self.relation_query_proj(transformed).unsqueeze(1)  # [B, 1, H]
+        relation_k = self.relation_key_proj(enhanced_repr)  # [B, L, H]
+        relation_v = self.relation_value_proj(enhanced_repr)  # [B, L, H]
+        
+        # 计算关系注意力分数
+        relation_scores = torch.matmul(relation_q, relation_k.transpose(-2, -1)) / math.sqrt(relation_k.size(-1))
+        if bool_mask is not None:
+            relation_scores = relation_scores.masked_fill(~bool_mask.unsqueeze(1), -1e9)
+        
+        relation_attn_weights = F.softmax(relation_scores, dim=-1)
+        relation_context = torch.matmul(relation_attn_weights, relation_v).squeeze(1)  # [B, H]
+        
+        # 增强关系表示
+        relation_repr = self.relation_pooling(relation_context)
+        
+        # 独立预测关系（不使用主实体类型信息）
+        relation_input = torch.cat([transformed, relation_repr], dim=1)
         relation_logits = self.relation_decoder(relation_input)
         relation_probs = F.softmax(relation_logits, dim=1)
         
-        # 3. 预测查询类型，同时考虑主实体和关系信息
-        # 将主实体概率分布、关系概率分布与句子表示连接起来
-        query_type_input = torch.cat([transformed, main_entity_probs, relation_probs], dim=1)
-        query_type_logits = self.query_type_decoder(query_type_input)
+        # 3. 预测查询类型，使用多模态融合
+        # 修正: 使用兼容性投影层替代矩阵乘法
+        entity_compat_repr = self.compatibility_projection(main_entity_probs)
+        
+        # 融合句子表示、关系表示和主实体表示
+        query_fusion_input = torch.cat([transformed, relation_repr, entity_compat_repr], dim=1)
+        query_fusion = self.query_type_fusion(query_fusion_input)
+        query_type_logits = self.query_type_decoder(query_fusion)
         
         return main_entity_logits, relation_logits, query_type_logits
     
@@ -244,84 +326,31 @@ class GraphQueryParser(nn.Module):
         return text[:5]  # 简单截取前5个字符
 
 class GraphQuerySystem:
-    def __init__(self, model, tokenizer, node_types, relations, device):
+    def __init__(self, model, tokenizer, device, config_path="data/graph_parser/common/relations_config.json"):
         self.model = model
         self.tokenizer = tokenizer
-        self.node_types = node_types
-        self.relations = relations
         self.device = device
+        with open(config_path, "r", encoding="utf-8") as f:
+            self.config = json.load(f)
+        self.field_mapping = {rel: info["db_field"] for rel, info in self.config["relations"].items()}
+        self.type_mapping = {type_name: type_info.get("template_key", type_name) 
+                            for type_name, type_info in self.config["node_types"].items()}
+        self.relation_to_query_type = {rel: info["compatible_types"] for rel, info in self.config["relations"].items()}
         
-        # 创建ID到类型/关系的映射
-        self.id2type = {v: k for k, v in node_types.items()}
-        self.id2relation = {v: k for k, v in relations.items()}
+        # 从配置文件构建关键词到关系的映射
+        self.keyword_to_relation = {}
+        for relation, config in self.config["relations"].items():
+            if "keywords" in config:
+                for keyword in config["keywords"]:
+                    self.keyword_to_relation[keyword] = relation
         
         # 加载知识库
         self.db = self.load_knowledge_base()
-        
-        # 响应模板
-        self.templates = {
-            "phone": "{entity}的电话号码是{value}。",
-            "location": "{entity}位于{value}。",
-            "website": "{entity}的官网是{value}。",
-            "person": "{entity}的校长是{value}。",
-            "tuition": "{entity}的学费是{value}。",
-            "founded_in": "{entity}成立于{value}。",
-            "motto": "{entity}的校训是{value}。",
-            "student_count": "{entity}的学生人数是{value}人。",
-            "area": "{entity}的占地面积是{value}。",
-            "short_name": "{entity}的简称是{value}。",
-            "predecessor": "{entity}的前身是{value}。",
-            "nearest_metro": "{entity}附近的地铁站是{value}。",
-            "anniversary_date": "{entity}的校庆日是{value}。",
-            "academician_count": "{entity}的院士人数是{value}人。",
-            "library_volume": "{entity}的图书馆藏书量是{value}。",
-            "party_secretary": "{entity}的党委书记是{value}。"
-        }
-        
-        # 关系到数据库字段的映射
-        self.field_mapping = {
-            "has_phone": "phone",
-            "located_in": "location",
-            "has_website": "website",
-            "has_president": "president",
-            "has_tuition": "tuition",
-            "founded_in": "founding_date",
-            "has_motto": "motto",
-            "has_student_count": "student_count",
-            "has_area": "area",
-            "has_short_name": "short_name",
-            "has_predecessor": "predecessor",
-            "has_nearest_metro": "nearest_metro",
-            "has_anniversary_date": "anniversary_date",
-            "has_academician_count": "academician_count",
-            "has_library_volume": "library_volume",
-            "has_party_secretary": "party_secretary"
-        }
-        
-        # 查询类型到响应模板的映射
-        self.type_mapping = {
-            "phone": "phone",
-            "location": "location",
-            "website": "website",
-            "person": "president",
-            "tuition": "tuition",
-            "year": "founding_date",
-            "motto": "motto",
-            "student_count": "student_count",
-            "area": "area",
-            "short_name": "short_name",
-            "predecessor": "predecessor",
-            "nearest_metro": "nearest_metro",
-            "date": "anniversary_date",
-            "academician_count": "academician_count",
-            "library": "library_volume",
-            "party_secretary": "party_secretary"
-        }
     
     def load_knowledge_base(self):
         """从JSON文件加载大学知识库"""
         try:
-            knowledge_base_path = "data/graph_parser/university_knowledge_base.json"
+            knowledge_base_path = "data/graph_parser/common/university_knowledge_base.json"
             print(f"加载知识库: {knowledge_base_path}")
             with open(knowledge_base_path, "r", encoding="utf-8") as f:
                 knowledge_base = json.load(f)
@@ -333,8 +362,50 @@ class GraphQuerySystem:
             return {}
     
     def predict_query_graph(self, text):
-        """使用模型解析文本为查询图结构"""
-        return self.model.predict_query_graph(text, self.tokenizer, self.node_types, self.relations, self.device)
+        """使用模型解析文本为查询图结构，并进行逻辑约束验证"""
+        # 获取模型预测的查询图
+        query_graph = self.model.predict_query_graph(text, self.tokenizer, self.config["node_types"], self.config["relations"], self.device)
+        
+        # 提取当前预测的关系和查询类型
+        relation = None
+        query_node = query_graph["query_node"]
+        query_type = query_graph["nodes"][query_node]["type"]
+        
+        for edge in query_graph["edges"]:
+            if edge["to"] == query_node:
+                relation = edge["relation"]
+                break
+        
+        # 应用关系-查询类型兼容性验证
+        if relation and query_type:
+            # 获取与当前关系兼容的查询类型列表
+            compatible_query_types = self.relation_to_query_type.get(relation, [])
+            
+            # 如果预测的查询类型与关系不兼容，进行修正
+            if query_type not in compatible_query_types and compatible_query_types:
+                # 使用第一个兼容的查询类型替换不兼容的查询类型
+                query_graph["nodes"][query_node]["type"] = compatible_query_types[0]
+                
+                # 输出纠正信息（仅调试用）
+                # print(f"修正查询类型: {query_type} → {compatible_query_types[0]} (关系: {relation})")
+        
+        # 使用规则修正关系（基于关键词）
+        relation = self.correct_relation_by_keywords(text, relation)
+        for edge in query_graph["edges"]:
+            if edge["to"] == query_node:
+                edge["relation"] = relation
+        
+        return query_graph
+    
+    def correct_relation_by_keywords(self, text, current_relation):
+        """基于文本关键词修正关系预测"""
+        # 使用从配置文件加载的关键词映射
+        for keyword, relation in self.keyword_to_relation.items():
+            if keyword in text:
+                return relation
+        
+        # 如果没有找到匹配的关键词，返回原关系
+        return current_relation
     
     def query_database(self, query_graph):
         """查询数据库获取缺失信息"""
@@ -350,6 +421,27 @@ class GraphQuerySystem:
             if edge["to"] == query_graph["query_node"]:
                 relation = edge["relation"]
                 
+                # 处理设施相关查询
+                if relation == "has_facility":
+                    # 查找连接到设施的节点
+                    facility_node_id = edge["to"]
+                    facility_type = query_graph["nodes"][facility_node_id]["type"]
+                    
+                    # 检查是否有设施信息
+                    if "facilities" in self.db[main_value] and facility_type in self.db[main_value]["facilities"]:
+                        facility_info = self.db[main_value]["facilities"][facility_type]
+                        
+                        # 检查是否需要查询设施的位置
+                        for other_edge in query_graph["edges"]:
+                            if other_edge["from"] == facility_node_id and other_edge["relation"] == "located_at":
+                                return facility_info.get("location", "未知位置")
+                        
+                        # 默认返回设施名称
+                        return facility_info.get("name", "未知设施")
+                    
+                    return "未找到相关设施信息"
+                
+                # 普通关系查询
                 field = self.field_mapping.get(relation)
                 if field and field in self.db[main_value]:
                     return self.db[main_value][field]
@@ -365,14 +457,29 @@ class GraphQuerySystem:
         query_type = query_node["type"]
         
         # 从边获取关系
+        relation = None
         for edge in query_graph["edges"]:
             if edge["to"] == query_graph["query_node"]:
-                template_key = self.type_mapping.get(query_type)
-                if template_key and template_key in self.templates:
-                    return self.templates[template_key].format(entity=main_value, value=result)
+                relation = edge["relation"]
+                break
+                
+        # 获取关系的显示名称（如果存在）
+        relation_display = relation
+        if relation in self.config["relations"]:
+            relation_display = self.config["relations"][relation].get("display_name", relation)
+                
+        # 使用模板生成回答
+        template_key = self.type_mapping.get(query_type)
+        if template_key and template_key in self.config["templates"]:
+            # 如果模板中包含relation_display占位符，传入关系显示名称
+            template = self.config["templates"][template_key] 
+            if "{relation_display}" in template:
+                return template.format(entity=main_value, value=result, relation_display=relation_display)
+            else:
+                return template.format(entity=main_value, value=result)
         
         # 默认回复
-        return f"{main_value}的{query_type}是{result}。"
+        return f"{main_value}的{relation_display}是{result}。"
     
     def visualize_graph(self, graph):
         """以文本形式可视化查询图"""
@@ -513,6 +620,10 @@ class GraphQuerySystem:
         
         if not relation:
             return f"抱歉，我不理解您想查询{main_entity}的什么信息。"
+            
+        # 检查是否是设施查询
+        if relation == "has_facility":
+            return self.process_facility_query(query_graph, main_entity)
         
         # 4. 查询知识库
         university_data = self.db.get(main_entity)
@@ -523,48 +634,316 @@ class GraphQuerySystem:
         if not field:
             return f"抱歉，我不了解{main_entity}的{relation}信息。"
         
-        # 6. 处理特殊字段
-        if field == "location":
-            # 对于location字段，需要获取address子字段
-            location_data = university_data.get("location", {})
-            value = location_data.get("address", "未知地址")
-            return f"{main_entity}位于{value}。"
-        else:
-            # 对于其他字段，直接获取字段值
-            value = university_data.get(field, "未知")
+        # 6. 处理字段数据获取
+        value = self.get_field_value(university_data, field)
+        if value is None:
+            return f"抱歉，我没有关于{main_entity}的{relation}信息。"
             
-            # 查找关系对应的模板
-            template_key = self.type_mapping.get(field, field)
-            if template_key in self.templates:
-                return self.templates[template_key].format(entity=main_entity, value=value)
+        # 7. 使用generate_response生成格式化回答
+        return self.generate_response(query_graph, value)
+        
+    def process_facility_query(self, query_graph, main_entity):
+        """处理设施相关的查询"""
+        # 获取查询图结构
+        # 确定设施类型
+        facility_type = None
+        facility_node_id = None
+        
+        for node_id, node in query_graph["nodes"].items():
+            if node_id != "n0" and node_id != query_graph["query_node"]:
+                facility_type = node["type"]
+                facility_node_id = node_id
+                break
+        
+        if not facility_type:
+            # 如果没有具体设施类型，返回所有设施信息
+            if "facilities" in self.db[main_entity]:
+                facilities = []
+                for type_name, facility_info in self.db[main_entity]["facilities"].items():
+                    facilities.append(f"{facility_info['name']}（位于{facility_info['location']}）")
+                
+                return f"{main_entity}的主要设施包括：{', '.join(facilities)}。"
             else:
-                return f"{main_entity}的{field}是{value}。"
+                return f"抱歉，我没有关于{main_entity}设施的信息。"
+        
+        # 有具体设施类型的情况
+        if "facilities" in self.db[main_entity] and facility_type in self.db[main_entity]["facilities"]:
+            facility_info = self.db[main_entity]["facilities"][facility_type]
+            
+            # 确定查询的是设施的什么信息（位置、描述等）
+            query_node = query_graph["nodes"][query_graph["query_node"]]
+            query_type = query_node["type"]
+            
+            if query_type == "location":
+                return f"{main_entity}的{facility_info['name']}位于{facility_info['location']}。"
+            elif "description" in facility_info:
+                return f"{main_entity}的{facility_info['name']}：{facility_info['description']}。"
+            else:
+                return f"{main_entity}有{facility_info['name']}，位于{facility_info['location']}。"
+        
+        return f"抱歉，我没有关于{main_entity}的{facility_type}设施信息。"
+    
+    def get_field_value(self, data, field):
+        """灵活获取数据中的字段值，支持嵌套结构和默认值处理"""
+        # 处理嵌套字段 (使用点号分隔)
+        if "." in field:
+            parts = field.split(".", 1)
+            if parts[0] in data and isinstance(data[parts[0]], dict):
+                return self.get_field_value(data[parts[0]], parts[1])
+            return self.get_default_value(field)
+        
+        # 处理facilities特殊字段
+        if field == "has_facility" and "facilities" in data:
+            facilities_list = []
+            for facility_type, facility_info in data["facilities"].items():
+                facilities_list.append(f"{facility_info['name']}（位于{facility_info['location']}）")
+            return "、".join(facilities_list)
+            
+        # 处理字典类型字段
+        if field in data:
+            if isinstance(data[field], dict):
+                # 处理facilities字段
+                if field == "facilities":
+                    facilities_list = []
+                    for facility_type, facility_info in data[field].items():
+                        facilities_list.append(f"{facility_info['name']}（位于{facility_info['location']}）")
+                    return "、".join(facilities_list)
+                # 处理location特殊字段
+                elif "address" in data[field]:
+                    return data[field]["address"]
+                elif "city" in data[field]:
+                    return data[field]["city"]
+                else:
+                    # 将字典转换为字符串
+                    return ", ".join([f"{k}: {v}" for k, v in data[field].items()])
+            return data[field]
+        
+        # 处理缺失字段
+        return self.get_default_value(field)
+        
+    def get_default_value(self, field):
+        """获取字段的默认值，如果配置中存在"""
+        if "default_values" in self.config and field in self.config["default_values"]:
+            return self.config["default_values"][field]
+        return "暂无相关信息"
 
 
-def evaluate(model, val_loader, device):
-    """评估模型在验证集上的性能"""
+def evaluate(model, val_loader, device, relation_criterion=None, query_criterion=None):
+    """评估模型性能"""
     model.eval()
-    total_loss = 0
+    criterion = nn.CrossEntropyLoss()
+    val_loss = 0
+    entity_correct = 0
+    relation_correct = 0
+    query_type_correct = 0
+    total = 0
+    
+    # 如果没有提供特定的损失函数，使用交叉熵
+    if relation_criterion is None:
+        relation_criterion = criterion
+    if query_criterion is None:
+        query_criterion = criterion
     
     with torch.no_grad():
         for batch in val_loader:
+            # 获取数据
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             main_entity_type = batch["main_entity_type"].to(device)
             relation = batch["relation"].to(device)
             query_type = batch["query_type"].to(device)
             
+            # 前向传播
             main_entity_logits, relation_logits, query_type_logits = model(input_ids, attention_mask)
             
             # 计算损失
-            loss_entity = F.cross_entropy(main_entity_logits, main_entity_type)
-            loss_relation = F.cross_entropy(relation_logits, relation)
-            loss_query = F.cross_entropy(query_type_logits, query_type)
+            entity_loss = criterion(main_entity_logits, main_entity_type)
+            relation_loss = relation_criterion(relation_logits, relation)
+            query_type_loss = query_criterion(query_type_logits, query_type)
             
-            loss = loss_entity + loss_relation + loss_query
-            total_loss += loss.item()
+            # 总损失 - 与训练阶段使用相同的权重
+            loss = entity_loss + 1.5 * relation_loss + 1.2 * query_type_loss
+            
+            # 累加批次损失
+            val_loss += loss.item()
+            
+            # 统计准确率
+            _, entity_pred = torch.max(main_entity_logits, dim=1)
+            _, relation_pred = torch.max(relation_logits, dim=1)
+            _, query_pred = torch.max(query_type_logits, dim=1)
+            
+            entity_correct += (entity_pred == main_entity_type).sum().item()
+            relation_correct += (relation_pred == relation).sum().item()
+            query_type_correct += (query_pred == query_type).sum().item()
+            total += main_entity_type.size(0)
     
-    return total_loss / len(val_loader)
+    # 计算平均损失和准确率
+    val_loss /= len(val_loader)
+    val_entity_acc = entity_correct / total
+    val_relation_acc = relation_correct / total
+    val_query_type_acc = query_type_correct / total
+    
+    return val_loss, val_entity_acc, val_relation_acc, val_query_type_acc
+
+
+def train_model(model, train_loader, val_loader, optimizer, scheduler, num_epochs, device, patience=5, model_save_path="model/graph_parser/output/best_graph_parser.pth"):
+    # 增加早停耐心值
+    criterion = nn.CrossEntropyLoss()
+    best_val_loss = float('inf')
+    best_epoch = 0
+    patience_counter = 0
+    history = {"train_loss": [], "val_loss": []}
+    
+    # 获取节点类型和关系的总数
+    num_node_types = model.main_entity_decoder[-1].out_features
+    num_relations = model.relation_decoder[-1].out_features
+    
+    # 计算关系类型和查询类型的类别权重
+    relation_weights = compute_class_weights(train_loader, "relation", num_relations)
+    query_type_weights = compute_class_weights(train_loader, "query_type", num_node_types)
+    
+    # 使用带权重的损失函数，并确保权重在正确的设备上
+    relation_criterion = nn.CrossEntropyLoss(weight=relation_weights.to(device))
+    query_type_criterion = nn.CrossEntropyLoss(weight=query_type_weights.to(device))
+    
+    for epoch in range(num_epochs):
+        # 训练阶段
+        model.train()
+        train_loss = 0
+        entity_correct = 0
+        relation_correct = 0
+        query_type_correct = 0
+        total = 0
+        
+        # 记录每个批次的进度
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{num_epochs} [Train]")
+        
+        for batch in progress_bar:
+            # 获取数据
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            main_entity_type = batch["main_entity_type"].to(device)
+            relation = batch["relation"].to(device)
+            query_type = batch["query_type"].to(device)
+            
+            # 清除梯度
+            optimizer.zero_grad()
+            
+            # 前向传播
+            main_entity_logits, relation_logits, query_type_logits = model(input_ids, attention_mask)
+            
+            # 计算损失 - 带有不同权重
+            entity_loss = criterion(main_entity_logits, main_entity_type)
+            relation_loss = relation_criterion(relation_logits, relation)
+            query_type_loss = query_type_criterion(query_type_logits, query_type)
+            
+            # 总损失 - 加大关系和查询类型损失的权重
+            loss = entity_loss + 1.5 * relation_loss + 1.2 * query_type_loss
+            
+            # 添加L2正则化项，增强对关系和实体类型的兼容性学习
+            compatibility_reg = 0.01 * torch.norm(model.compatibility_matrix, p=2)
+            loss += compatibility_reg
+            
+            # 反向传播
+            loss.backward()
+            
+            # 梯度裁剪，防止梯度爆炸
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            
+            # 更新参数
+            optimizer.step()
+            
+            # 统计准确率
+            _, entity_pred = torch.max(main_entity_logits, dim=1)
+            _, relation_pred = torch.max(relation_logits, dim=1)
+            _, query_pred = torch.max(query_type_logits, dim=1)
+            
+            entity_correct += (entity_pred == main_entity_type).sum().item()
+            relation_correct += (relation_pred == relation).sum().item()
+            query_type_correct += (query_pred == query_type).sum().item()
+            total += main_entity_type.size(0)
+            
+            # 累加批次损失
+            train_loss += loss.item()
+            
+            # 更新进度条
+            progress_bar.set_postfix({
+                "loss": f"{loss.item():.4f}",
+                "entity_acc": f"{entity_correct/total:.4f}",
+                "relation_acc": f"{relation_correct/total:.4f}",
+                "query_acc": f"{query_type_correct/total:.4f}"
+            })
+        
+        # 计算训练集平均损失和准确率
+        train_loss /= len(train_loader)
+        train_entity_acc = entity_correct / total
+        train_relation_acc = relation_correct / total
+        train_query_type_acc = query_type_correct / total
+        
+        # 验证阶段
+        val_loss, val_entity_acc, val_relation_acc, val_query_type_acc = evaluate(model, val_loader, device, 
+                                                                     relation_criterion, query_type_criterion)
+        
+        # 更新学习率
+        scheduler.step()
+        
+        # 保存历史记录
+        history["train_loss"].append(train_loss)
+        history["val_loss"].append(val_loss)
+        
+        # 打印结果
+        print(f"Epoch {epoch+1}/{num_epochs}")
+        print(f"Train Loss: {train_loss:.4f}, Entity Acc: {train_entity_acc:.4f}, Relation Acc: {train_relation_acc:.4f}, Query Acc: {train_query_type_acc:.4f}")
+        print(f"Val Loss: {val_loss:.4f}, Entity Acc: {val_entity_acc:.4f}, Relation Acc: {val_relation_acc:.4f}, Query Acc: {val_query_type_acc:.4f}")
+        
+        # 早停策略
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_epoch = epoch + 1
+            patience_counter = 0
+            
+            # 保存最佳模型
+            torch.save(model.state_dict(), model_save_path)
+            print(f"模型已保存到 {model_save_path}")
+        else:
+            patience_counter += 1
+            if patience_counter >= patience:
+                print(f"早停! 在第{best_epoch}轮达到最佳验证损失.")
+                break
+    
+    # 返回训练历史
+    return history
+
+
+def compute_class_weights(dataloader, field, num_classes=None):
+    """计算类别权重，用于处理数据不平衡问题"""
+    class_counts = defaultdict(int)
+    
+    # 统计每个类别的样本数
+    for batch in dataloader:
+        labels = batch[field].numpy()
+        for label in labels:
+            class_counts[label] += 1
+    
+    # 计算类别权重 (反比于样本数量)
+    total_samples = sum(class_counts.values())
+    
+    # 确保num_classes至少等于最大类ID+1
+    if num_classes is None:
+        num_classes = max(class_counts.keys()) + 1
+    else:
+        num_classes = max(num_classes, max(class_counts.keys()) + 1)
+    
+    # 初始化权重数组，确保大小匹配类总数
+    weights = np.ones(num_classes)
+    
+    # 为出现的类设置权重
+    for class_idx, count in class_counts.items():
+        if count > 0:
+            weights[class_idx] = total_samples / (count * len(class_counts))
+    
+    # 确保返回torch.float32类型的权重
+    return torch.tensor(weights, dtype=torch.float32)
 
 
 def detailed_evaluation(model, test_loader, id2type, id2relation, device):
@@ -600,6 +979,22 @@ def detailed_evaluation(model, test_loader, id2type, id2relation, device):
             entity_pred = torch.argmax(main_entity_logits, dim=1)
             relation_pred = torch.argmax(relation_logits, dim=1)
             query_pred = torch.argmax(query_type_logits, dim=1)
+            
+            # 添加额外的逻辑规则约束 - 检查关系和查询类型的兼容性
+            for i in range(len(relation_pred)):
+                rel_id = relation_pred[i].item()
+                
+                # 获取与此关系兼容的查询类型
+                compatible_query_types = get_compatible_query_types(rel_id, id2relation)
+                
+                # 如果当前预测的查询类型与关系不兼容，选择最兼容的查询类型
+                pred_query_id = query_pred[i].item()
+                if id2type.get(pred_query_id) not in compatible_query_types:
+                    # 重新选择最兼容的查询类型
+                    for j, logit in enumerate(query_type_logits[i]):
+                        if id2type.get(j) in compatible_query_types:
+                            query_pred[i] = j
+                            break
             
             # 更新准确率
             entity_correct += (entity_pred == main_entity_type).sum().item()
@@ -667,23 +1062,23 @@ def detailed_evaluation(model, test_loader, id2type, id2relation, device):
     print("\n=== 混淆最严重的实体类型 ===")
     for true_type, preds in entity_confusion.items():
         incorrect = sum(count for pred, count in preds.items() if pred != true_type)
-        total = sum(preds.values())
-        if total > 0 and incorrect/total > 0.3:  # 错误率超过30%
+        total_type = sum(preds.values())
+        if total_type > 0 and incorrect/total_type > 0.3:  # 错误率超过30%
             print(f"{true_type}:")
             for pred, count in sorted(preds.items(), key=lambda x: x[1], reverse=True):
                 if pred != true_type:
-                    print(f"  误判为 {pred}: {count}次 ({count/total:.2%})")
+                    print(f"  误判为 {pred}: {count}次 ({count/total_type:.2%})")
     
     # 打印混淆最严重的关系
     print("\n=== 混淆最严重的关系 ===")
     for true_rel, preds in relation_confusion.items():
         incorrect = sum(count for pred, count in preds.items() if pred != true_rel)
-        total = sum(preds.values())
-        if total > 0 and incorrect/total > 0.3:  # 错误率超过30%
+        total_rel = sum(preds.values())
+        if total_rel > 0 and incorrect/total_rel > 0.3:  # 错误率超过30%
             print(f"{true_rel}:")
             for pred, count in sorted(preds.items(), key=lambda x: x[1], reverse=True):
                 if pred != true_rel:
-                    print(f"  误判为 {pred}: {count}次 ({count/total:.2%})")
+                    print(f"  误判为 {pred}: {count}次 ({count/total_rel:.2%})")
     
     # 打印几个错误例子
     print("\n=== 典型错误例子 ===")
@@ -696,89 +1091,35 @@ def detailed_evaluation(model, test_loader, id2type, id2relation, device):
     return entity_correct/total, relation_correct/total, query_type_correct/total
 
 
-def train_model(model, train_loader, val_loader, optimizer, scheduler, num_epochs, device, patience=5):
-    # 增加早停耐心值
-    best_val_loss = float('inf')
-    no_improve = 0
+def get_compatible_query_types(relation_id, id2relation):
+    """获取与关系兼容的查询类型"""
+    relation_str = id2relation.get(relation_id, "<unk>")
     
-    # 记录训练历史
-    history = {
-        "train_loss": [],
-        "val_loss": []
+    # 关系到查询类型的映射字典
+    relation_to_query_types = {
+        "has_phone": ["phone"],
+        "located_in": ["location", "city"],
+        "has_president": ["person"],
+        "has_website": ["website"],
+        "has_tuition": ["tuition"],
+        "has_motto": ["motto"],
+        "founded_in": ["year"],
+        "has_student_count": ["student_count", "number"],
+        "has_admission_score": ["admission_score", "number"],
+        "has_international_program": ["international_program"],
+        "predecessor": ["university"],
+        "nearest_metro": ["metro_station"],
+        "anniversary_date": ["date"],
+        "academician_count": ["number"],
+        "library_volume": ["number"],
+        "party_secretary": ["person"],
+        "offers_major": ["major_list", "major"],
+        "has_facility": ["library", "sports_center", "canteen", "laboratory", "dormitory"],
+        "located_at": ["location"],
+        "has_quality": ["quality"]
     }
     
-    for epoch in range(num_epochs):
-        model.train()
-        total_loss = 0
-        
-        for batch in train_loader:
-            optimizer.zero_grad()
-            
-            input_ids = batch["input_ids"].to(device)
-            attention_mask = batch["attention_mask"].to(device)
-            main_entity_type = batch["main_entity_type"].to(device)
-            relation = batch["relation"].to(device)
-            query_type = batch["query_type"].to(device)
-            
-            # 常规训练流程
-            main_entity_logits, relation_logits, query_type_logits = model(input_ids, attention_mask)
-            
-            # 添加标签平滑
-            loss_entity = F.cross_entropy(main_entity_logits, main_entity_type, label_smoothing=0.1)
-            loss_relation = F.cross_entropy(relation_logits, relation, label_smoothing=0.1)
-            loss_query = F.cross_entropy(query_type_logits, query_type, label_smoothing=0.1)
-            
-            loss = loss_entity + loss_relation + loss_query
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
-            
-            total_loss += loss.item()
-        
-        avg_train_loss = total_loss / len(train_loader)
-        avg_val_loss = evaluate(model, val_loader, device)
-        
-        history["train_loss"].append(avg_train_loss)
-        history["val_loss"].append(avg_val_loss)
-        
-        # 更新学习率
-        if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-            scheduler.step(avg_val_loss)
-        else:
-            scheduler.step()
-        
-        print(f"Epoch {epoch+1}/{num_epochs}")
-        print(f"训练损失: {avg_train_loss:.4f}, 验证损失: {avg_val_loss:.4f}")
-        
-        # 检查早停
-        if avg_val_loss < best_val_loss:
-            best_val_loss = avg_val_loss
-            torch.save(model.state_dict(), "best_graph_parser.pth")
-            print("保存最佳模型")
-            no_improve = 0
-        else:
-            no_improve += 1
-            if no_improve >= patience:
-                print(f"早停: {patience}轮无改善")
-                break
-    
-    # 绘制训练曲线
-    # 设置中文字体支持
-    plt.rcParams['font.sans-serif'] = ['AR PL UMing CN', 'SimHei', 'Microsoft YaHei', 'WenQuanYi Micro Hei'] + plt.rcParams['font.sans-serif']
-    plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(history["train_loss"], label="训练损失")
-    plt.plot(history["val_loss"], label="验证损失")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.legend()
-    plt.title("训练与验证损失")
-    plt.savefig("training_history.png")
-    plt.close()
-    
-    print(f"训练完成，最佳验证损失: {best_val_loss:.4f}")
-    return history
+    return relation_to_query_types.get(relation_str, ["<unk>"])
 
 
 # 示例使用
@@ -821,7 +1162,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=batch_size)
     
     # 7. 初始化模型
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("musa" if torch_musa.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
     print(f"使用设备: {device}")
     
     model = GraphQueryParser(
@@ -854,7 +1195,7 @@ if __name__ == "__main__":
     else:
         # 加载预训练模型
         try:
-            model.load_state_dict(torch.load("best_graph_parser.pth", map_location=device))
+            model.load_state_dict(torch.load("model/graph_parser/output/best_graph_parser.pth", map_location=device))
             print("已加载预训练模型")
         except:
             print("无法加载预训练模型，使用初始化模型")
@@ -871,7 +1212,7 @@ if __name__ == "__main__":
     print(f"\n总体测试集性能:")
     
     # 9. 创建查询系统
-    query_system = GraphQuerySystem(model, tokenizer, node_types, relations, device)
+    query_system = GraphQuerySystem(model, tokenizer, "config.json")
     
     # 10. 处理查询
     query = "清华大学的电话号码是多少？"

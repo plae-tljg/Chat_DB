@@ -1,0 +1,850 @@
+{
+  "清华大学": {
+    "name": "清华大学",
+    "type": "university",
+    "phone": "010-62793001",
+    "website": "https://www.tsinghua.edu.cn",
+    "location": {
+      "city": "北京市",
+      "address": "北京市海淀区清华园1号"
+    },
+    "president": "王希勤",
+    "founding_date": "1911年",
+    "motto": "自强不息，厚德载物",
+    "student_count": 36159,
+    "area": "4.42平方公里",
+    "library_volume": "约700万册",
+    "academician_count": 167,
+    "short_name": "清华",
+    "party_secretary": "王希勤",
+    "anniversary_date": "4月24日",
+    "predecessor": "清华学堂",
+    "nearest_metro": "清华东路西口站",
+    "tuition": "本科生每年约5000-8000元，研究生8000-10000元",
+    "admission_score": "北京地区理科最低分686分",
+    "international_program": "设有多个国际交流项目，包括与MIT、斯坦福大学等合作项目",
+    "offers_major": "计算机科学、电子工程、机械工程、建筑学、经济学等",
+    "facilities": {
+      "library": {
+        "name": "清华大学图书馆",
+        "location": "校园中心位置",
+        "description": "中国高校最大的图书馆之一，藏书丰富"
+      },
+      "sports_center": {
+        "name": "清华大学综合体育馆",
+        "location": "校园西北角",
+        "description": "现代化体育设施，曾承办奥运会比赛"
+      },
+      "canteen": {
+        "name": "清华大学学生食堂",
+        "location": "紫荆学生公寓附近",
+        "description": "提供多种口味的美食，价格实惠"
+      },
+      "laboratory": {
+        "name": "清华大学科研实验室",
+        "location": "分布在各个院系",
+        "description": "拥有世界一流的科研设备和环境"
+      },
+      "dormitory": {
+        "name": "紫荆公寓",
+        "location": "校园东部",
+        "description": "现代化学生宿舍，环境舒适"
+      }
+    }
+  },
+  "北京大学": {
+    "name": "北京大学",
+    "type": "university",
+    "phone": "010-62751201",
+    "website": "https://www.pku.edu.cn",
+    "location": {
+      "city": "北京市",
+      "address": "北京市海淀区颐和园路5号"
+    },
+    "president": "龚旗煌",
+    "founding_date": "1898年",
+    "motto": "爱国、进步、民主、科学",
+    "student_count": 41005,
+    "area": "2.7平方公里",
+    "library_volume": "约1150万册",
+    "academician_count": 184,
+    "short_name": "北大",
+    "party_secretary": "邱水平",
+    "anniversary_date": "5月4日",
+    "predecessor": "京师大学堂",
+    "nearest_metro": "北京大学东门站",
+    "tuition": "本科生每年约5000-8000元，医学专业约10000元",
+    "admission_score": "北京地区文科最低分680分",
+    "international_program": "与哈佛、耶鲁等多所世界顶尖大学有交换生项目",
+    "offers_major": "中文、历史、哲学、物理、法学等",
+    "facilities": {
+      "library": {
+        "name": "北京大学图书馆",
+        "location": "校园中心区域",
+        "description": "中国最古老的大学图书馆之一，收藏有大量珍贵古籍"
+      },
+      "sports_center": {
+        "name": "北京大学邱德拔体育馆",
+        "location": "校园东南角",
+        "description": "现代化的体育设施，可容纳数千人"
+      },
+      "canteen": {
+        "name": "北京大学农园食堂",
+        "location": "校园中部",
+        "description": "北大最受欢迎的食堂之一，提供多种特色菜品"
+      },
+      "laboratory": {
+        "name": "北京大学实验室",
+        "location": "理科教学楼群",
+        "description": "配备先进的科研设备和仪器"
+      },
+      "dormitory": {
+        "name": "畅春园公寓",
+        "location": "校园西部",
+        "description": "环境优美的学生宿舍区"
+      }
+    }
+  },
+  "中国科学技术大学": {
+    "name": "中国科学技术大学",
+    "type": "university",
+    "phone": "0551-63602184",
+    "website": "https://www.ustc.edu.cn",
+    "location": {
+      "city": "合肥市",
+      "address": "安徽省合肥市金寨路96号"
+    },
+    "president": "包信和",
+    "founding_date": "1958年",
+    "motto": "红专并进，理实交融",
+    "student_count": 16000,
+    "area": "1.46平方公里",
+    "library_volume": "约450万册",
+    "academician_count": 65,
+    "short_name": "中科大",
+    "party_secretary": "舒歌群",
+    "anniversary_date": "9月20日",
+    "predecessor": "无",
+    "nearest_metro": "大学城站",
+    "tuition": "本科生每年约5000元，研究生8000元",
+    "admission_score": "安徽地区理科最低分670分",
+    "international_program": "提供多个国际交流项目，特别是科研合作项目",
+    "offers_major": "数学、物理、化学、天文学等基础科学",
+    "facilities": {
+      "library": {
+        "name": "中国科学技术大学图书馆",
+        "location": "校园中心",
+        "description": "藏书丰富，尤其在科学技术领域"
+      },
+      "sports_center": {
+        "name": "中科大体育中心",
+        "location": "校园西区",
+        "description": "设施齐全的体育活动场所"
+      },
+      "canteen": {
+        "name": "中科大学生食堂",
+        "location": "学生公寓附近",
+        "description": "价格实惠，种类多样"
+      },
+      "laboratory": {
+        "name": "中科大先进技术实验室",
+        "location": "东区科研楼",
+        "description": "配备先进的科研仪器设备"
+      },
+      "dormitory": {
+        "name": "中科大学生公寓",
+        "location": "校园东南角",
+        "description": "现代化学生宿舍"
+      }
+    }
+  },
+  "复旦大学": {
+    "name": "复旦大学",
+    "type": "university",
+    "phone": "021-65642222",
+    "website": "https://www.fudan.edu.cn",
+    "location": {
+      "city": "上海市",
+      "address": "上海市杨浦区邯郸路220号"
+    },
+    "president": "金力",
+    "founding_date": "1905年",
+    "motto": "博学而笃志，切问而近思",
+    "student_count": 36000,
+    "area": "2.47平方公里",
+    "library_volume": "约500万册",
+    "academician_count": 52,
+    "short_name": "复旦",
+    "party_secretary": "焦扬",
+    "anniversary_date": "5月27日",
+    "predecessor": "复旦公学",
+    "nearest_metro": "邯郸路站",
+    "tuition": "本科生每年约5000-8000元，医学专业12000元",
+    "admission_score": "上海地区理科最低分660分",
+    "international_program": "设有中外合作办学项目和国际学生交换项目",
+    "offers_major": "临床医学、新闻学、经济学、物理学等",
+    "facilities": {
+      "library": {
+        "name": "复旦大学图书馆",
+        "location": "邯郸校区中心",
+        "description": "拥有丰富的馆藏资源和先进的信息设备"
+      },
+      "sports_center": {
+        "name": "复旦大学体育中心",
+        "location": "邯郸校区北区",
+        "description": "设有田径场、游泳馆和各类球场"
+      },
+      "canteen": {
+        "name": "复旦大学北区食堂",
+        "location": "邯郸校区北区",
+        "description": "提供多种风味餐饮，环境整洁"
+      },
+      "laboratory": {
+        "name": "复旦大学实验室",
+        "location": "各专业院系内",
+        "description": "配备现代化的实验设备，尤其医学实验室设施先进"
+      },
+      "dormitory": {
+        "name": "复旦大学学生公寓",
+        "location": "校园南区",
+        "description": "环境舒适，配套设施完善"
+      }
+    }
+  },
+  "武汉大学": {
+    "name": "武汉大学",
+    "type": "university",
+    "phone": "027-68754231",
+    "website": "https://www.whu.edu.cn",
+    "location": {
+      "city": "武汉市",
+      "address": "湖北省武汉市武昌区珞珈山"
+    },
+    "president": "窦贤康",
+    "founding_date": "1893年",
+    "motto": "自强、弘毅、求是、拓新",
+    "student_count": 50000,
+    "area": "2.42平方公里",
+    "library_volume": "约570万册",
+    "academician_count": 34,
+    "short_name": "武大",
+    "party_secretary": "韩进",
+    "anniversary_date": "11月29日",
+    "predecessor": "自强学堂",
+    "nearest_metro": "珞雄路站",
+    "tuition": "本科生每年约4500-6000元",
+    "admission_score": "湖北地区理科最低分645分",
+    "international_program": "与多所国际知名高校有联合培养项目",
+    "offers_major": "测绘学、水利工程、法学、经济学等",
+    "facilities": {
+      "library": {
+        "name": "武汉大学图书馆",
+        "location": "珞珈山下",
+        "description": "仿古建筑，环境优美，藏书丰富"
+      },
+      "sports_center": {
+        "name": "武汉大学体育场",
+        "location": "校园东部",
+        "description": "设有田径场、游泳池、网球场等设施"
+      },
+      "canteen": {
+        "name": "珞珈山食堂",
+        "location": "校园中部",
+        "description": "提供多种湖北特色美食"
+      },
+      "laboratory": {
+        "name": "武汉大学实验楼群",
+        "location": "工学院附近",
+        "description": "配备多种专业设备，尤其是测绘和水利工程实验设施先进"
+      },
+      "dormitory": {
+        "name": "武汉大学学生宿舍",
+        "location": "校园南部",
+        "description": "环境宜人，可以俯瞰东湖景色"
+      }
+    }
+  },
+  "浙江大学": {
+    "name": "浙江大学",
+    "type": "university",
+    "phone": "0571-87951111",
+    "website": "https://www.zju.edu.cn",
+    "location": {
+      "city": "杭州市",
+      "address": "浙江省杭州市西湖区余杭塘路866号"
+    },
+    "president": "吴朝晖",
+    "founding_date": "1897年",
+    "motto": "求是创新",
+    "student_count": 54641,
+    "area": "4.5平方公里",
+    "library_volume": "约700万册",
+    "academician_count": 51,
+    "short_name": "浙大",
+    "party_secretary": "任少波",
+    "anniversary_date": "5月21日",
+    "predecessor": "求是书院",
+    "nearest_metro": "紫金港站",
+    "tuition": "本科生每年约5000-7000元",
+    "admission_score": "浙江地区综合评价招生",
+    "international_program": "设有多个国际合作办学项目，与150多所国外高校有合作关系",
+    "offers_major": "计算机、控制科学、农业科学、电气工程等",
+    "facilities": {
+      "library": {
+        "name": "浙江大学图书馆",
+        "location": "紫金港校区中心",
+        "description": "现代化图书馆，环境优美，设施完善"
+      },
+      "sports_center": {
+        "name": "浙江大学体育中心",
+        "location": "紫金港校区西区",
+        "description": "设有综合体育馆和各类专业场地"
+      },
+      "canteen": {
+        "name": "浙江大学食堂",
+        "location": "各校区均有",
+        "description": "种类丰富，价格合理，尤其以紫金港校区食堂最为著名"
+      },
+      "laboratory": {
+        "name": "浙江大学实验中心",
+        "location": "玉泉校区和紫金港校区",
+        "description": "拥有先进的科研设备和实验平台"
+      },
+      "dormitory": {
+        "name": "浙江大学学生公寓",
+        "location": "各校区内",
+        "description": "环境优美，设施完善，特别是紫金港校区学生公寓条件较好"
+      }
+    }
+  },
+  "上海交通大学": {
+    "name": "上海交通大学",
+    "type": "university",
+    "phone": "021-34200000",
+    "website": "https://www.sjtu.edu.cn",
+    "location": {
+      "city": "上海市",
+      "address": "上海市闵行区东川路800号"
+    },
+    "president": "林忠钦",
+    "founding_date": "1896年",
+    "motto": "饮水思源，爱国荣校",
+    "student_count": 41000,
+    "area": "4.16平方公里",
+    "library_volume": "约430万册",
+    "academician_count": 40,
+    "short_name": "上交大",
+    "party_secretary": "姜斯宪",
+    "anniversary_date": "4月8日",
+    "predecessor": "南洋公学",
+    "nearest_metro": "交通大学站",
+    "tuition": "本科生每年约5000-8000元，医学、艺术类专业较高",
+    "admission_score": "上海地区理科最低分650分",
+    "international_program": "与密歇根大学等国际高校有合作办学项目",
+    "offers_major": "船舶与海洋工程、机械工程、电子信息、医学等",
+    "facilities": {
+      "library": {
+        "name": "上海交通大学图书馆",
+        "location": "闵行校区中心",
+        "description": "现代化图书馆，藏书丰富，设施完善"
+      },
+      "sports_center": {
+        "name": "上海交通大学体育中心",
+        "location": "闵行校区北区",
+        "description": "设有田径场、游泳馆和各类球场"
+      },
+      "canteen": {
+        "name": "上海交通大学第一食堂",
+        "location": "闵行校区学生区",
+        "description": "提供多种风味餐饮，环境整洁"
+      },
+      "laboratory": {
+        "name": "上海交通大学实验中心",
+        "location": "各院系内",
+        "description": "配备先进的科研设备，尤其是船舶与海洋工程实验设施世界一流"
+      },
+      "dormitory": {
+        "name": "上海交通大学学生公寓",
+        "location": "闵行校区东区",
+        "description": "环境舒适，设施完善"
+      }
+    }
+  },
+  "南京大学": {
+    "name": "南京大学",
+    "type": "university",
+    "phone": "025-83592000",
+    "website": "https://www.nju.edu.cn",
+    "location": {
+      "city": "南京市",
+      "address": "江苏省南京市栖霞区仙林大道163号"
+    },
+    "president": "吕建",
+    "founding_date": "1902年",
+    "motto": "诚朴雄伟，励学敦行",
+    "student_count": 33000,
+    "area": "5.19平方公里",
+    "library_volume": "约480万册",
+    "academician_count": 31,
+    "short_name": "南大",
+    "party_secretary": "胡金波",
+    "anniversary_date": "5月20日",
+    "predecessor": "三江师范学堂",
+    "nearest_metro": "南京大学仙林校区站",
+    "tuition": "本科生每年约4800-6000元",
+    "admission_score": "江苏地区文科最低分385分（原始分）",
+    "international_program": "与多所国际高校有合作项目和交换生计划",
+    "offers_major": "中文、历史、物理、化学、天文学等",
+    "facilities": {
+      "library": {
+        "name": "南京大学图书馆",
+        "location": "仙林校区中心",
+        "description": "现代化图书馆，馆藏丰富，环境优美"
+      },
+      "sports_center": {
+        "name": "南京大学体育馆",
+        "location": "仙林校区北区",
+        "description": "设施齐全的现代化体育中心"
+      },
+      "canteen": {
+        "name": "南京大学学生食堂",
+        "location": "仙林校区学生区域",
+        "description": "提供多种风味美食，环境舒适"
+      },
+      "laboratory": {
+        "name": "南京大学实验中心",
+        "location": "各院系内",
+        "description": "拥有先进的科研设备和实验条件"
+      },
+      "dormitory": {
+        "name": "南京大学学生公寓",
+        "location": "仙林校区东部",
+        "description": "环境优美、设施完善的现代化宿舍"
+      }
+    }
+  },
+  "哈尔滨工业大学": {
+    "name": "哈尔滨工业大学",
+    "type": "university",
+    "phone": "0451-86412114",
+    "website": "https://www.hit.edu.cn",
+    "location": {
+      "city": "哈尔滨市",
+      "address": "黑龙江省哈尔滨市南岗区西大直街92号"
+    },
+    "president": "周玉",
+    "founding_date": "1920年",
+    "motto": "规格严格，功夫到家",
+    "student_count": 42000,
+    "area": "4.7平方公里",
+    "library_volume": "约400万册",
+    "academician_count": 33,
+    "short_name": "哈工大",
+    "party_secretary": "熊四皓",
+    "anniversary_date": "6月7日",
+    "predecessor": "哈尔滨中俄工业学校",
+    "nearest_metro": "哈工大站",
+    "tuition": "本科生每年约5000-6500元",
+    "admission_score": "黑龙江地区理科最低分635分",
+    "international_program": "与俄罗斯、美国等国家有多个国际合作项目",
+    "offers_major": "航天工程、机械工程、材料科学、计算机科学等",
+    "facilities": {
+      "library": {
+        "name": "哈尔滨工业大学图书馆",
+        "location": "校园中心区域",
+        "description": "拥有丰富的科技文献资源"
+      },
+      "sports_center": {
+        "name": "哈工大体育馆",
+        "location": "校园西部",
+        "description": "设有室内体育馆和室外运动场地"
+      },
+      "canteen": {
+        "name": "哈工大学生食堂",
+        "location": "学生区附近",
+        "description": "提供多种风味美食，特别有东北特色菜品"
+      },
+      "laboratory": {
+        "name": "哈工大国家重点实验室",
+        "location": "分布在各个校区",
+        "description": "拥有多个国家级重点实验室，设备先进"
+      },
+      "dormitory": {
+        "name": "哈工大学生公寓",
+        "location": "校园东部",
+        "description": "设施完善，冬季供暖充足"
+      }
+    }
+  },
+  "西安交通大学": {
+    "name": "西安交通大学",
+    "type": "university",
+    "phone": "029-82668899",
+    "website": "http://www.xjtu.edu.cn",
+    "location": {
+      "city": "西安市",
+      "address": "陕西省西安市碑林区咸宁西路28号"
+    },
+    "president": "王树国",
+    "founding_date": "1896年",
+    "motto": "精勤求学，敦笃励志，果毅力行，忠恕任事",
+    "student_count": 31000,
+    "area": "3.33平方公里",
+    "library_volume": "约460万册",
+    "academician_count": 35,
+    "short_name": "西交大",
+    "party_secretary": "卢建军",
+    "anniversary_date": "4月8日",
+    "predecessor": "南洋公学",
+    "nearest_metro": "大雁塔站",
+    "tuition": "本科生每年约5000-7000元",
+    "admission_score": "陕西地区理科最低分640分",
+    "international_program": "与英国、美国等国家多所大学有合作项目",
+    "offers_major": "电气工程、机械工程、能源动力、医学等",
+    "facilities": {
+      "library": {
+        "name": "西安交通大学图书馆",
+        "location": "校园中心区域",
+        "description": "现代化图书馆，藏书丰富"
+      },
+      "sports_center": {
+        "name": "西安交通大学体育馆",
+        "location": "校园南部",
+        "description": "设有综合体育馆和各类运动场地"
+      },
+      "canteen": {
+        "name": "西安交通大学学生食堂",
+        "location": "校园中部",
+        "description": "提供多种风味餐饮，特别有西北特色美食"
+      },
+      "laboratory": {
+        "name": "西安交通大学实验室",
+        "location": "分布在各个院系",
+        "description": "设备先进，尤其是工程类实验室"
+      },
+      "dormitory": {
+        "name": "西安交通大学学生公寓",
+        "location": "校园东北部",
+        "description": "环境整洁，设施完善"
+      }
+    }
+  },
+  "同济大学": {
+    "name": "同济大学",
+    "type": "university",
+    "phone": "021-65982200",
+    "website": "https://www.tongji.edu.cn",
+    "location": {
+      "city": "上海市",
+      "address": "上海市杨浦区四平路1239号"
+    },
+    "president": "陈杰",
+    "founding_date": "1907年",
+    "motto": "严谨，求实，团结，创新",
+    "student_count": 36000,
+    "area": "2.83平方公里",
+    "library_volume": "约410万册",
+    "academician_count": 25,
+    "short_name": "同济",
+    "party_secretary": "方守恩",
+    "anniversary_date": "5月20日",
+    "predecessor": "德文医学堂",
+    "nearest_metro": "同济大学站",
+    "tuition": "本科生每年约5000-8000元",
+    "admission_score": "上海地区理科最低分635分",
+    "international_program": "与德国多所大学有紧密合作关系",
+    "offers_major": "建筑学、土木工程、环境科学、城市规划等",
+    "facilities": {
+      "library": {
+        "name": "同济大学图书馆",
+        "location": "四平路校区中心",
+        "description": "现代化图书馆，藏书丰富"
+      },
+      "sports_center": {
+        "name": "同济大学体育馆",
+        "location": "四平路校区北部",
+        "description": "设施完善的运动场馆"
+      },
+      "canteen": {
+        "name": "同济大学学生食堂",
+        "location": "各校区均有",
+        "description": "提供多种风味餐饮，价格实惠"
+      },
+      "laboratory": {
+        "name": "同济大学实验楼",
+        "location": "工程学院附近",
+        "description": "尤其在建筑、土木、环境等领域设备先进"
+      },
+      "dormitory": {
+        "name": "同济大学学生公寓",
+        "location": "校园东部",
+        "description": "环境舒适，设施完善"
+      }
+    }
+  },
+  "天津大学": {
+    "name": "天津大学",
+    "type": "university",
+    "phone": "022-27404201",
+    "website": "http://www.tju.edu.cn",
+    "location": {
+      "city": "天津市",
+      "address": "天津市南开区卫津路92号"
+    },
+    "president": "金东寒",
+    "founding_date": "1895年",
+    "motto": "实事求是",
+    "student_count": 32000,
+    "area": "2.37平方公里",
+    "library_volume": "约330万册",
+    "academician_count": 21,
+    "short_name": "天大",
+    "party_secretary": "雷鸣",
+    "anniversary_date": "10月2日",
+    "predecessor": "北洋大学",
+    "nearest_metro": "体育中心站",
+    "tuition": "本科生每年约5500-7000元",
+    "admission_score": "天津地区理科最低分640分",
+    "international_program": "与英国、美国等国家多所大学有合作项目",
+    "offers_major": "化学工程、精密仪器、水利工程、建筑学等",
+    "facilities": {
+      "library": {
+        "name": "天津大学图书馆",
+        "location": "卫津路校区中心",
+        "description": "馆藏丰富，具有悠久历史"
+      },
+      "sports_center": {
+        "name": "天津大学体育馆",
+        "location": "卫津路校区西部",
+        "description": "设有田径场、游泳池和各类球场"
+      },
+      "canteen": {
+        "name": "天津大学学生食堂",
+        "location": "校园内多处",
+        "description": "提供多种餐饮选择，价格合理"
+      },
+      "laboratory": {
+        "name": "天津大学精密仪器实验室",
+        "location": "工程学院附近",
+        "description": "拥有先进的科研设备，在精密仪器和化工领域尤为突出"
+      },
+      "dormitory": {
+        "name": "天津大学学生公寓",
+        "location": "校园东部",
+        "description": "设施完善，环境舒适"
+      }
+    }
+  },
+  "东南大学": {
+    "name": "东南大学",
+    "type": "university",
+    "phone": "025-83794000",
+    "website": "https://www.seu.edu.cn",
+    "location": {
+      "city": "南京市",
+      "address": "江苏省南京市江宁区东南大学路2号"
+    },
+    "president": "张广军",
+    "founding_date": "1902年",
+    "motto": "止于至善",
+    "student_count": 30000,
+    "area": "3.52平方公里",
+    "library_volume": "约430万册",
+    "academician_count": 18,
+    "short_name": "东大",
+    "party_secretary": "金保昇",
+    "anniversary_date": "6月15日",
+    "predecessor": "三江师范学堂",
+    "nearest_metro": "经天路站",
+    "tuition": "本科生每年约5000-7000元",
+    "admission_score": "江苏地区理科最低分378分（原始分）",
+    "international_program": "与国际多所高校有合作办学项目",
+    "offers_major": "建筑学、土木工程、电子信息、生物医学工程等",
+    "facilities": {
+      "library": {
+        "name": "东南大学图书馆",
+        "location": "九龙湖校区中心",
+        "description": "现代化图书馆，环境优美"
+      },
+      "sports_center": {
+        "name": "东南大学体育中心",
+        "location": "九龙湖校区南部",
+        "description": "设有综合体育场和游泳馆"
+      },
+      "canteen": {
+        "name": "东南大学学生食堂",
+        "location": "各校区均有",
+        "description": "提供多种风味餐饮，价格实惠"
+      },
+      "laboratory": {
+        "name": "东南大学实验中心",
+        "location": "各学院内",
+        "description": "设备先进，尤其是生物医学工程和电子信息领域"
+      },
+      "dormitory": {
+        "name": "东南大学学生公寓",
+        "location": "九龙湖校区内",
+        "description": "环境幽美，设施完善"
+      }
+    }
+  },
+  "四川大学": {
+    "name": "四川大学",
+    "type": "university",
+    "phone": "028-85403116",
+    "website": "https://www.scu.edu.cn",
+    "location": {
+      "city": "成都市",
+      "address": "四川省成都市武侯区望江路29号"
+    },
+    "president": "李言荣",
+    "founding_date": "1896年",
+    "motto": "海纳百川，有容乃大",
+    "student_count": 60000,
+    "area": "5.35平方公里",
+    "library_volume": "约650万册",
+    "academician_count": 20,
+    "short_name": "川大",
+    "party_secretary": "王小锋",
+    "anniversary_date": "5月3日",
+    "predecessor": "四川中西学堂",
+    "nearest_metro": "华西坝站",
+    "tuition": "本科生每年约4500-6500元，医学专业8000-10000元",
+    "admission_score": "四川地区理科最低分615分",
+    "international_program": "与美国、欧洲等地区多所高校有合作项目",
+    "offers_major": "临床医学、口腔医学、基础医学、历史学、水利工程等",
+    "facilities": {
+      "library": {
+        "name": "四川大学图书馆",
+        "location": "望江校区和江安校区",
+        "description": "藏书丰富，环境优美"
+      },
+      "sports_center": {
+        "name": "四川大学体育中心",
+        "location": "江安校区",
+        "description": "设施现代化，场地宽阔"
+      },
+      "canteen": {
+        "name": "四川大学学生食堂",
+        "location": "各校区均有",
+        "description": "提供多种川菜特色美食，价格实惠"
+      },
+      "laboratory": {
+        "name": "四川大学实验室",
+        "location": "各院系内",
+        "description": "设备先进，尤其是医学实验室设施一流"
+      },
+      "dormitory": {
+        "name": "四川大学学生公寓",
+        "location": "各校区内",
+        "description": "环境舒适，配套设施齐全"
+      }
+    }
+  },
+  "中山大学": {
+    "name": "中山大学",
+    "type": "university",
+    "phone": "020-84110000",
+    "website": "https://www.sysu.edu.cn",
+    "location": {
+      "city": "广州市",
+      "address": "广东省广州市海珠区新港西路135号"
+    },
+    "president": "高松",
+    "founding_date": "1924年",
+    "motto": "博学、审问、慎思、明辨、笃行",
+    "student_count": 56000,
+    "area": "6.17平方公里",
+    "library_volume": "约630万册",
+    "academician_count": 21,
+    "short_name": "中大",
+    "party_secretary": "陈春声",
+    "anniversary_date": "11月12日",
+    "predecessor": "国立广东大学",
+    "nearest_metro": "中大站",
+    "tuition": "本科生每年约4500-6500元",
+    "admission_score": "广东地区理科最低分635分",
+    "international_program": "与世界多所知名大学有合作交流项目",
+    "offers_major": "医学、经济学、管理学、历史学、物理学等",
+    "facilities": {
+      "library": {
+        "name": "中山大学图书馆",
+        "location": "南校区中心",
+        "description": "具有岭南特色的现代化图书馆"
+      },
+      "sports_center": {
+        "name": "中山大学体育馆",
+        "location": "各校区均有",
+        "description": "设施完善，环境优美"
+      },
+      "canteen": {
+        "name": "中山大学学生食堂",
+        "location": "各校区均有",
+        "description": "提供多种粤式特色美食"
+      },
+      "laboratory": {
+        "name": "中山大学实验室",
+        "location": "各院系内",
+        "description": "设备先进，尤其是医学和海洋科学领域"
+      },
+      "dormitory": {
+        "name": "中山大学学生公寓",
+        "location": "各校区内",
+        "description": "环境优美，设施齐全"
+      }
+    }
+  },
+  "南开大学": {
+    "name": "南开大学",
+    "type": "university",
+    "phone": "022-23508229",
+    "website": "https://www.nankai.edu.cn",
+    "location": {
+      "city": "天津市",
+      "address": "天津市南开区卫津路94号"
+    },
+    "president": "曹雪涛",
+    "founding_date": "1919年",
+    "motto": "允公允能，日新月异",
+    "student_count": 28000,
+    "area": "2.56平方公里",
+    "library_volume": "约390万册",
+    "academician_count": 19,
+    "short_name": "南开",
+    "party_secretary": "杨庆山",
+    "anniversary_date": "10月17日",
+    "predecessor": "私立南开学校",
+    "nearest_metro": "天塔站",
+    "tuition": "本科生每年约4500-6000元",
+    "admission_score": "天津地区文科最低分638分",
+    "international_program": "与多所国际高校有合作项目和留学交换计划",
+    "offers_major": "经济学、化学、数学、历史学、旅游管理等",
+    "facilities": {
+      "library": {
+        "name": "南开大学图书馆",
+        "location": "八里台校区中心",
+        "description": "馆藏丰富，环境优雅"
+      },
+      "sports_center": {
+        "name": "南开大学体育馆",
+        "location": "校园西部",
+        "description": "设有综合体育馆和室外运动场"
+      },
+      "canteen": {
+        "name": "南开大学学生食堂",
+        "location": "校内多处",
+        "description": "提供多种风味餐饮，价格合理"
+      },
+      "laboratory": {
+        "name": "南开大学实验中心",
+        "location": "各院系内",
+        "description": "设备先进，尤其是化学实验室"
+      },
+      "dormitory": {
+        "name": "南开大学学生公寓",
+        "location": "校园东南部",
+        "description": "环境舒适，设施完善"
+      }
+    }
+  }
+} 
