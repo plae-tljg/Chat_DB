@@ -86,4 +86,4 @@ logs/
 .ipynb_checkpoints
 
 # # 忽略训练输出目录中的权重和大型文件
-# data/graph_parser/train_output/
+# data/graph_parser/train_output/data/graph_parser/train_output/test_examples.json
