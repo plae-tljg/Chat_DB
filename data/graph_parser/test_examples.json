@@ -1,0 +1,1376 @@
+[
+  {
+    "question": "同济大学的校庆活动通常在什么时候？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "同济大学"
+        },
+        "n1": {
+          "type": "date",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "anniversary_date"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学的校庆日是哪一天？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "date",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "anniversary_date"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "大连理工大学的校庆日是哪一天？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "大连理工大学"
+        },
+        "n1": {
+          "type": "date",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "anniversary_date"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "到哈尔滨工业大学怎么走？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "哈尔滨工业大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "北京师范大学的校址在哪？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京师范大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "上海交通大学的艺术类专业强不强？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "上海交通大学"
+        },
+        "n1": {
+          "type": "major",
+          "value": "数学"
+        },
+        "n2": {
+          "type": "quality",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "has_quality"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "谁担任厦门大学校长？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_president"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学校庆日有什么特别的活动？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "date",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "anniversary_date"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "同济大学的图书馆是全国第几大？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "同济大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "library_volume"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "哈尔滨工业大学有什么著名的建筑？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "哈尔滨工业大学"
+        },
+        "n1": {
+          "type": "dormitory",
+          "value": "哈尔滨工业大学宿舍"
+        },
+        "n2": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_facility"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "located_at"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "南京大学是由哪些学校合并而成的？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "南京大学"
+        },
+        "n1": {
+          "type": "university",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "predecessor"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学有哪些著名的院士？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "academician_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学的师生比例是多少？学生总数是？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "student_count",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_student_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "乘坐地铁去山东大学应该在哪一站下车？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "山东大学"
+        },
+        "n1": {
+          "type": "metro_station",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "nearest_metro"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "大连理工大学的精神理念是什么？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "大连理工大学"
+        },
+        "n1": {
+          "type": "motto",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_motto"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "西安交通大学的专业设置情况如何？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "西安交通大学"
+        },
+        "n1": {
+          "type": "major_list",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "去武汉大学乘几号线地铁最方便？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "武汉大学"
+        },
+        "n1": {
+          "type": "metro_station",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "nearest_metro"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "武汉大学是由谁领导的？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "武汉大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_president"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "同济大学最早叫什么名字？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "同济大学"
+        },
+        "n1": {
+          "type": "university",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "predecessor"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "清华大学的收费标准是什么？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "清华大学"
+        },
+        "n1": {
+          "type": "tuition",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_tuition"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学电话多少",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "phone",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_phone"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "厦门大学校门口有地铁站吗？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "厦门大学"
+        },
+        "n1": {
+          "type": "metro_station",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "nearest_metro"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "华中科技大学金融系怎么样？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "华中科技大学"
+        },
+        "n1": {
+          "type": "major",
+          "value": "生物学"
+        },
+        "n2": {
+          "type": "quality",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "has_quality"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "南京大学的总机电话是多少",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "南京大学"
+        },
+        "n1": {
+          "type": "phone",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_phone"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "如何在网上找到北京大学？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京大学"
+        },
+        "n1": {
+          "type": "website",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_website"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "吉林大学东门最近的地铁站是哪个？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "吉林大学"
+        },
+        "n1": {
+          "type": "metro_station",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "nearest_metro"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "吉林大学位于什么地方？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "吉林大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "谁负责管理四川大学？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "四川大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_president"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "哈尔滨工业大学电话多少",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "哈尔滨工业大学"
+        },
+        "n1": {
+          "type": "phone",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_phone"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "四川大学的主页是什么？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "四川大学"
+        },
+        "n1": {
+          "type": "website",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_website"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "华中科技大学的珍本书籍有多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "华中科技大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "library_volume"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "华中科技大学有多少两院院士？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "华中科技大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "academician_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "同济大学校长的名字是？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "同济大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_president"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "武汉大学有英语授课的课程吗？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "武汉大学"
+        },
+        "n1": {
+          "type": "international_program",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_international_program"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "北京师范大学文科最低录取分是多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京师范大学"
+        },
+        "n1": {
+          "type": "admission_score",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_admission_score"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "哈尔滨工业大学有多少在校生？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "哈尔滨工业大学"
+        },
+        "n1": {
+          "type": "student_count",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_student_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "吉林大学校训体现了什么价值观？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "吉林大学"
+        },
+        "n1": {
+          "type": "motto",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_motto"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "清华大学的师生比例是多少？学生总数是？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "清华大学"
+        },
+        "n1": {
+          "type": "student_count",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_student_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "谁提出了华中科技大学的校训？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "华中科技大学"
+        },
+        "n1": {
+          "type": "motto",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_motto"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "北京理工大学的医学院水平如何？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京理工大学"
+        },
+        "n1": {
+          "type": "major",
+          "value": "生物学"
+        },
+        "n2": {
+          "type": "quality",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "has_quality"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "北京师范大学的建校时间是？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京师范大学"
+        },
+        "n1": {
+          "type": "year",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "founded_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "中山大学党委书记上任时间是什么时候？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "中山大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "party_secretary"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "北京大学的校址在哪？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "北京大学坐落于哪个城市？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "北京大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "东南大学是由哪些学校合并而成的？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "东南大学"
+        },
+        "n1": {
+          "type": "university",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "predecessor"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "南开大学的新闻传播学院口碑如何？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "南开大学"
+        },
+        "n1": {
+          "type": "major",
+          "value": "金融学"
+        },
+        "n2": {
+          "type": "quality",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "has_quality"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "武汉大学的特色学科有哪些？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "武汉大学"
+        },
+        "n1": {
+          "type": "major_list",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "请告诉我天津大学的地址",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "天津大学"
+        },
+        "n1": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "located_in"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "谁是南开大学的校长？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "南开大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_president"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "大连理工大学的院士团队有多大？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "大连理工大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "academician_count"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "西安交通大学的研究生学费是多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "西安交通大学"
+        },
+        "n1": {
+          "type": "tuition",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_tuition"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "吉林大学的图书馆藏书量是多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "吉林大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "library_volume"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "同济大学党委书记上任时间是什么时候？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "同济大学"
+        },
+        "n1": {
+          "type": "person",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "party_secretary"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "中山大学的新闻传播学院口碑如何？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "中山大学"
+        },
+        "n1": {
+          "type": "major",
+          "value": "物理学"
+        },
+        "n2": {
+          "type": "quality",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "offers_major"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "has_quality"
+        }
+      ],
+      "query_node": "n2"
+    }
+  },
+  {
+    "question": "山东大学的珍本书籍有多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "山东大学"
+        },
+        "n1": {
+          "type": "number",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "library_volume"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "清华大学的电话号码是多少？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "清华大学"
+        },
+        "n1": {
+          "type": "phone",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_phone"
+        }
+      ],
+      "query_node": "n1"
+    }
+  },
+  {
+    "question": "南京大学的体育馆位置在哪里？",
+    "graph": {
+      "nodes": {
+        "n0": {
+          "type": "university",
+          "value": "南京大学"
+        },
+        "n1": {
+          "type": "sports_center",
+          "value": "南京大学体育馆"
+        },
+        "n2": {
+          "type": "location",
+          "value": "no_info"
+        }
+      },
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1",
+          "relation": "has_facility"
+        },
+        {
+          "from": "n1",
+          "to": "n2",
+          "relation": "located_at"
+        }
+      ],
+      "query_node": "n2"
+    }
+  }
+]
